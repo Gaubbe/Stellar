@@ -11,6 +11,9 @@
     <Reference Include="MMHOOK_Assembly-CSharp">
       <HintPath>Managed\MMHOOK_Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>Managed\UnityEngine.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
