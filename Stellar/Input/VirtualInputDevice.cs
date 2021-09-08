@@ -43,8 +43,6 @@ namespace Stellar.Input
             if (_ih.activeGamepadType == GamepadType.NONE)
                 _ih.MapControllerButtons(GamepadType.XBOX_360);
 
-            Stellar.Instance.Log(_ih.activeGamepadType);
-
             leftControl = AddControl(InputControlType.DPadLeft, "Left");
             rightControl = AddControl(InputControlType.DPadRight, "Right");
             upControl = AddControl(InputControlType.DPadUp, "Up");
