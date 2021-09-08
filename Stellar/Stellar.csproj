@@ -1,24 +1,30 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <HKManaged>E:\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed</HKManaged>
   </PropertyGroup>
 
+  <Target Name="CopyMod" AfterTargets="PostBuildEvent">
+    <MakeDir Condition="!Exists('$(HKManaged)/Mods/$(TargetName)')" Directories="$(HKManaged)/Mods/$(TargetName)" />
+    <Copy SourceFiles="$(TargetPath); $(TargetDir)/$(TargetName).pdb" DestinationFolder="$(HKManaged)/Mods/$(TargetName)" />
+  </Target>
+  
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>$(HKManaged)\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="MMHOOK_Assembly-CSharp">
-      <HintPath>Managed\MMHOOK_Assembly-CSharp.dll</HintPath>
+      <HintPath>$(HKManaged)\MMHOOK_Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(HKManaged)\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+      <HintPath>$(HKManaged)\UnityEngine.InputLegacyModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>Managed\UnityEngine.UI.dll</HintPath>
+      <HintPath>$(HKManaged)\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
 

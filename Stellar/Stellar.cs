@@ -1,5 +1,8 @@
-﻿using Modding;
-using System.Collections.Generic;
+﻿using InControl;
+using Modding;
+using Stellar.Input;
+using System;
+using System.IO;
 using UnityEngine;
 
 namespace Stellar
@@ -8,13 +11,44 @@ namespace Stellar
     {
         internal static Stellar Instance;
 
-        public Stellar() : base("Stellar") { }
+        VirtualInputDevice vid;
+        private float timer = 0.0f;
+        private float actionStartTime = 0.0f;
+        private float actionEndTime = 0.0f;
 
-        public override void Initialize(Dictionary<string, Dictionary<string, GameObject>> preloadedObjects)
+        public Stellar() : base("Stellar") 
+        {
+        }
+
+        public override void Initialize()
         {
             Instance = this;
 
-            Log("poggers");
+            vid = new VirtualInputDevice(GameManager.instance.inputHandler);
+
+            Log(vid.inventoryControl);
+
+            InputManager.AttachDevice(vid);
+
+            On.HeroController.Update += HeroUpdateHook;
+        }
+
+        private void HeroUpdateHook(On.HeroController.orig_Update orig, HeroController self)
+        {
+            timer += Time.deltaTime;
+
+            if(timer >= actionEndTime)
+            {
+                vid.Inventory = false;
+                if (UnityEngine.Input.GetKey(KeyCode.P))
+                {
+                    actionStartTime = timer;
+                    actionEndTime = timer + 1.0f;
+                    vid.Inventory = true;
+                }
+            }
+            
+            orig(self);
         }
     }
 }
