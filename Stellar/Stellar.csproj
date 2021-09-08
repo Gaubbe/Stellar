@@ -17,9 +17,6 @@
     <Reference Include="MMHOOK_Assembly-CSharp">
       <HintPath>$(HKManaged)\MMHOOK_Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>Managed\UnityEngine.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(HKManaged)\UnityEngine.CoreModule.dll</HintPath>
     </Reference>

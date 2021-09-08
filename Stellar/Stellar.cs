@@ -37,12 +37,14 @@ namespace Stellar
 
             if(timer >= actionEndTime)
             {
-                vid.Dash = false;
+                vid.Down = false;
+                vid.QuickCast = false;
                 if (UnityEngine.Input.GetKey(KeyCode.P))
                 {
                     actionStartTime = timer;
                     actionEndTime = timer + 1.0f;
-                    vid.Dash = true;
+                    vid.Down = true;
+                    vid.QuickCast = true;
                 }
             }
             
