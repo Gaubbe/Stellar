@@ -34,14 +34,17 @@ namespace Stellar.Input
         public bool Jump { get; set; }
         private InputControl jumpControl;
         public bool Inventory { get; set; }
-        private InputControl inventoryControl;
+        public InputControl inventoryControl;
 
         public VirtualInputDevice(InputHandler ih)
         {
             _ih = ih;
 
             if (_ih.activeGamepadType == GamepadType.NONE)
+            {
                 _ih.MapControllerButtons(GamepadType.XBOX_360);
+                _ih.activeGamepadType = GamepadType.XBOX_360;
+            }
 
             leftControl = AddControl(InputControlType.DPadLeft, "Left");
             rightControl = AddControl(InputControlType.DPadRight, "Right");
@@ -55,7 +58,24 @@ namespace Stellar.Input
             superDashControl = AddControl(GameManager.instance.gameSettings.controllerMapping.superDash, "Super Dash");
             dreamNailControl = AddControl(GameManager.instance.gameSettings.controllerMapping.dreamNail, "Dream Nail");
             jumpControl = AddControl(GameManager.instance.gameSettings.controllerMapping.jump, "Jump");
-            inventoryControl = AddControl(GameManager.instance.gameSettings.controllerMapping.quickMap, "Inventory");
+
+
+            switch (_ih.activeGamepadType)
+            {
+                case GamepadType.XBOX_360:
+                    inventoryControl = AddControl(InputControlType.Back, "Inventory");
+                    break;
+                case GamepadType.PS4:
+                    inventoryControl = AddControl(InputControlType.TouchPadButton, "Inventory");
+                    break;
+                case GamepadType.XBOX_ONE:
+                    inventoryControl = AddControl(InputControlType.View, "Inventory");
+                    break;
+                default:
+                    inventoryControl = AddControl(InputControlType.Select, "Inventory");
+                    break;
+            }
+
         }
 
         public override void Update(ulong updateTick, float deltaTime)

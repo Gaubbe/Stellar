@@ -26,6 +26,8 @@ namespace Stellar
 
             vid = new VirtualInputDevice(GameManager.instance.inputHandler);
 
+            Log(vid.inventoryControl);
+
             InputManager.AttachDevice(vid);
 
             On.HeroController.Update += HeroUpdateHook;
@@ -37,14 +39,12 @@ namespace Stellar
 
             if(timer >= actionEndTime)
             {
-                vid.Down = false;
-                vid.QuickCast = false;
+                vid.Inventory = false;
                 if (UnityEngine.Input.GetKey(KeyCode.P))
                 {
                     actionStartTime = timer;
                     actionEndTime = timer + 1.0f;
-                    vid.Down = true;
-                    vid.QuickCast = true;
+                    vid.Inventory = true;
                 }
             }
             
