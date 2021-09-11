@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Stellar.Input
 {
+
     public class VirtualInputDevice : InputDevice
     {
         private readonly InputHandler _ih;
@@ -95,6 +96,68 @@ namespace Stellar.Input
             inventoryControl.UpdateWithState(Inventory, updateTick, deltaTime);
 
             Commit(updateTick, deltaTime);
+        }
+
+        public void SetStateFromActionType(ActionType actionType, bool state)
+        {
+            switch (actionType)
+            {
+                case ActionType.LEFT:
+                    Left = state;
+                    break;
+
+                case ActionType.RIGHT:
+                    Right = state;
+                    break;
+
+                case ActionType.UP:
+                    Up = state;
+                    break;
+
+                case ActionType.DOWN:
+                    Down = state;
+                    break;
+
+                case ActionType.ATTACK:
+                    Attack = state;
+                    break;
+
+                case ActionType.CAST:
+                    Cast = state;
+                    break;
+
+                case ActionType.QUICK_CAST:
+                    QuickCast = state;
+                    break;
+
+                case ActionType.DASH:
+                    Dash = state;
+                    break;
+
+                case ActionType.SUPER_DASH:
+                    SuperDash = state;
+                    break;
+
+                case ActionType.DREAM_NAIL:
+                    DreamNail = state;
+                    break;
+
+                case ActionType.JUMP:
+                    Jump = state;
+                    break;
+
+                case ActionType.INVENTORY:
+                    Inventory = state;
+                    break;
+            }
+        }
+
+        public void ResetState()
+        {
+            foreach(ActionType a in Enum.GetValues(typeof(ActionType)))
+            {
+                SetStateFromActionType(a, false);
+            }
         }
     }
 }

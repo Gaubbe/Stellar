@@ -12,9 +12,7 @@ namespace Stellar
         internal static Stellar Instance;
 
         VirtualInputDevice vid;
-        private float timer = 0.0f;
-        private float actionStartTime = 0.0f;
-        private float actionEndTime = 0.0f;
+        ActionPlayer ap;
 
         public Stellar() : base("Stellar") 
         {
@@ -25,29 +23,59 @@ namespace Stellar
             Instance = this;
 
             vid = new VirtualInputDevice(GameManager.instance.inputHandler);
+            ap = new ActionPlayer(vid);
 
-            Log(vid.inventoryControl);
+            var jump = new TimedAction()
+            {
+                ActionType = ActionType.JUMP,
+                FrameStart = 0,
+                FrameEnd = 50
+            };
+
+            var down = new TimedAction()
+            {
+                ActionType = ActionType.DOWN,
+                FrameStart = 1,
+                FrameEnd = 2
+            };
+
+            var attack = new TimedAction() 
+            {
+                ActionType = ActionType.ATTACK,
+                FrameStart = 1,
+                FrameEnd = 2
+            };
+
+            ap.AddAction(jump);
+            ap.AddAction(down);
+            ap.AddAction(attack);
 
             InputManager.AttachDevice(vid);
 
             On.HeroController.Update += HeroUpdateHook;
+            On.HeroController.FixedUpdate += HeroFixedUpdateHook;
+        }
+
+        private void HeroFixedUpdateHook(On.HeroController.orig_FixedUpdate orig, HeroController self)
+        {
+            ap.OnPhysicsFrame();
+
+            orig(self);
         }
 
         private void HeroUpdateHook(On.HeroController.orig_Update orig, HeroController self)
         {
-            timer += Time.deltaTime;
-
-            if(timer >= actionEndTime)
+            if (UnityEngine.Input.GetKey(KeyCode.P))
             {
-                vid.Inventory = false;
-                if (UnityEngine.Input.GetKey(KeyCode.P))
-                {
-                    actionStartTime = timer;
-                    actionEndTime = timer + 1.0f;
-                    vid.Inventory = true;
-                }
+                ap.Playing = true;
             }
-            
+
+            if (UnityEngine.Input.GetKey(KeyCode.O))
+            {
+                ap.Reset();
+                Log("Reset!");
+            }
+
             orig(self);
         }
     }
