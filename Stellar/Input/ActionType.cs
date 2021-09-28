@@ -15,4 +15,9 @@
         JUMP,
         INVENTORY
     }
+    public enum ActionState
+    {
+        PRESSED,
+        UNPRESSED
+    }
 }

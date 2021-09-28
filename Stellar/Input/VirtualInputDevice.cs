@@ -60,7 +60,6 @@ namespace Stellar.Input
             dreamNailControl = AddControl(GameManager.instance.gameSettings.controllerMapping.dreamNail, "Dream Nail");
             jumpControl = AddControl(GameManager.instance.gameSettings.controllerMapping.jump, "Jump");
 
-
             switch (_ih.activeGamepadType)
             {
                 case GamepadType.XBOX_360:

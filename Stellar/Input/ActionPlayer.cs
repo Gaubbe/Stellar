@@ -10,7 +10,7 @@ namespace Stellar.Input
         private readonly VirtualInputDevice _vid;
         private readonly PhysicsFrameTimer _pft;
 
-        private List<TimedAction> actions;
+        private List<ActionEvent> actions;
 
         public bool Playing { get; set; }
 
@@ -19,13 +19,64 @@ namespace Stellar.Input
             _vid = vid;
             _pft = new PhysicsFrameTimer();
 
-            actions = new List<TimedAction>();
+            actions = new List<ActionEvent>();
         }
 
-        public void AddAction(TimedAction action)
+        public void AddAction(ActionEvent action)
         {
-            // Eventually, the list is going to have to be sorted so it's more efficient
             actions.Add(action);
+        }
+
+        public void AddAction(ActionType type, int frameStart, int frameEnd)
+        {
+            ActionEvent pressed = new ActionEvent()
+            {
+                ActionType = type,
+                ActionState = ActionState.PRESSED,
+                Frame = frameStart
+            };
+
+            ActionEvent unpressed = new ActionEvent()
+            {
+                ActionType = type,
+                ActionState = ActionState.UNPRESSED,
+                Frame = frameEnd
+            };
+
+            actions.Add(pressed);
+            actions.Add(unpressed);
+        }
+
+        public void AddAction(ActionType type, ActionState state, int frame)
+        {
+            ActionEvent action = new ActionEvent()
+            {
+                ActionType = type,
+                ActionState = state,
+                Frame = frame
+            };
+
+            actions.Add(action);
+        }
+
+        public void AddSingleFrameAction(ActionType type, int frame)
+        {
+            ActionEvent pressed = new ActionEvent()
+            {
+                ActionType = type,
+                ActionState = ActionState.PRESSED,
+                Frame = frame
+            };
+
+            ActionEvent unpressed = new ActionEvent()
+            {
+                ActionType = type,
+                ActionState = ActionState.UNPRESSED,
+                Frame = frame + 1
+            };
+
+            actions.Add(pressed);
+            actions.Add(unpressed);
         }
 
         public void OnPhysicsFrame()
@@ -34,13 +85,16 @@ namespace Stellar.Input
             {
                 foreach (var a in actions)
                 {
-                    if (a.FrameStart <= _pft.FrameCount && a.FrameEnd >= _pft.FrameCount)
+                    if(a.Frame == _pft.FrameCount)
                     {
-                        _vid.SetStateFromActionType(a.ActionType, true);
-                    }
-                    else
-                    {
-                        _vid.SetStateFromActionType(a.ActionType, false);
+                        if(a.ActionState == ActionState.PRESSED)
+                        {
+                            _vid.SetStateFromActionType(a.ActionType, true);
+                        }
+                        else
+                        {
+                            _vid.SetStateFromActionType(a.ActionType, false);
+                        }
                     }
                 }
 

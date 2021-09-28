@@ -4,10 +4,11 @@ using System.Text;
 
 namespace Stellar.Input
 {
-    public struct TimedAction
+
+    public class ActionEvent
     {
         public ActionType ActionType { get; set; }
-        public int FrameStart { get; set; }
-        public int FrameEnd { get; set; }
+        public ActionState ActionState { get; set; }
+        public int Frame { get; set; }
     }
 }

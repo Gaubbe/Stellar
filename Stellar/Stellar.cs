@@ -25,30 +25,13 @@ namespace Stellar
             vid = new VirtualInputDevice(GameManager.instance.inputHandler);
             ap = new ActionPlayer(vid);
 
-            var jump = new TimedAction()
-            {
-                ActionType = ActionType.JUMP,
-                FrameStart = 0,
-                FrameEnd = 50
-            };
-
-            var down = new TimedAction()
-            {
-                ActionType = ActionType.DOWN,
-                FrameStart = 1,
-                FrameEnd = 2
-            };
-
-            var attack = new TimedAction() 
-            {
-                ActionType = ActionType.ATTACK,
-                FrameStart = 1,
-                FrameEnd = 2
-            };
-
-            ap.AddAction(jump);
-            ap.AddAction(down);
-            ap.AddAction(attack);
+            ap.AddAction(ActionType.JUMP, 0, 7);
+            ap.AddAction(ActionType.LEFT, 0, 99);
+            ap.AddAction(ActionType.JUMP, 67, 110);
+            ap.AddSingleFrameAction(ActionType.RIGHT, 99);
+            ap.AddSingleFrameAction(ActionType.QUICK_CAST, 100);
+            ap.AddSingleFrameAction(ActionType.QUICK_CAST, 121);
+            //ap.AddAction(ActionType.LEFT, 160, 200);
 
             InputManager.AttachDevice(vid);
 
@@ -73,7 +56,6 @@ namespace Stellar
             if (UnityEngine.Input.GetKey(KeyCode.O))
             {
                 ap.Reset();
-                Log("Reset!");
             }
 
             orig(self);
